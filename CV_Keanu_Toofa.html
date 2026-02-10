@@ -2,308 +2,212 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV - Keanu TOOFA</title>
     <style>
-        :root {
-            --primary-color: #002e5d; /* Bleu sombre type Mines/Construction */
-            --accent-color: #bfa15f; /* Doré subtil pour les distinctions */
-            --text-color: #333;
-            --light-bg: #f4f4f4;
-            --section-spacing: 25px;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
+            font-family: Arial, Helvetica, sans-serif; /* Police standard et sobre */
+            font-size: 11pt;
+            color: #000;
+            line-height: 1.4;
+            background-color: #fff;
             margin: 0;
             padding: 0;
-            background-color: #e9e9e9;
         }
 
-        .container {
-            max-width: 210mm; /* Largeur A4 */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
             margin: 20px auto;
+            padding: 20mm; /* Marges standard A4 */
             background: white;
-            padding: 40px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
 
-        /* HEADER */
+        /* En-tête */
         header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 20px;
-            margin-bottom: var(--section-spacing);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            text-align: center;
+            margin-bottom: 25px;
         }
 
-        .header-info h1 {
-            margin: 0;
-            font-size: 2.5em;
-            color: var(--primary-color);
+        h1 {
+            font-size: 20pt;
             text-transform: uppercase;
+            margin: 0 0 5px 0;
             letter-spacing: 1px;
         }
 
-        .header-info h2 {
-            margin: 5px 0 0;
-            font-size: 1.4em;
-            font-weight: 500;
-            color: #555;
+        .subtitle {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
-        .header-info .availability {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 3px 8px;
-            font-size: 0.9em;
-            border-radius: 4px;
-            margin-top: 8px;
+        .contact-info {
+            font-size: 10pt;
+            margin-bottom: 5px;
         }
 
-        .contact-details {
-            text-align: right;
-            font-size: 0.9em;
+        .contact-info span {
+            margin: 0 5px;
         }
 
-        .contact-details a {
-            color: var(--text-color);
-            text-decoration: none;
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        /* SECTIONS */
-        section {
-            margin-bottom: var(--section-spacing);
-        }
-
-        h3 {
-            color: var(--primary-color);
-            font-size: 1.2em;
+        /* Sections */
+        h2 {
+            font-size: 12pt;
             text-transform: uppercase;
-            border-left: 5px solid var(--accent-color);
-            padding-left: 10px;
+            border-bottom: 1px solid #000; /* Trait noir simple */
+            padding-bottom: 3px;
+            margin-top: 20px;
             margin-bottom: 15px;
         }
 
-        /* PROFIL */
-        .profile-text {
-            font-style: italic;
-            background-color: var(--light-bg);
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 3px solid #ccc;
-        }
-
-        /* EDUC & EXP ITEMS */
-        .entry {
+        /* Éléments (Expériences / Formations) */
+        .item {
             margin-bottom: 15px;
-            page-break-inside: avoid;
         }
 
-        .entry-header {
+        .item-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 5px;
-        }
-
-        .entry-title {
             font-weight: bold;
-            font-size: 1.1em;
         }
 
-        .entry-org {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .entry-date, .entry-loc {
-            font-size: 0.9em;
-            color: #666;
+        .item-subheader {
             font-style: italic;
-        }
-
-        .entry ul {
-            margin: 5px 0 0 20px;
-            padding: 0;
-            font-size: 0.95em;
-        }
-
-        .entry li {
             margin-bottom: 3px;
         }
 
-        /* SKILLS TABLE */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        ul {
+            margin: 5px 0 5px 20px;
+            padding: 0;
+            list-style-type: disc; /* Puces classiques */
         }
 
-        .skill-category strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 5px;
+        li {
+            margin-bottom: 3px;
+            text-align: justify;
         }
 
-        /* UTILS */
-        .distinction {
-            color: #bfa15f; /* Gold-ish */
-            font-weight: bold;
+        .intro {
+            text-align: justify;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
+        /* Pour l'impression */
         @media print {
-            body { background: none; }
-            .container { box-shadow: none; margin: 0; padding: 20px; width: 100%; }
-            a { text-decoration: none; color: black; }
+            body { margin: 0; box-shadow: none; }
+            .page { margin: 0; border: none; width: 100%; box-shadow: none; padding: 15mm; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="header-info">
-                <h1>Keanu TOOFA</h1>
-                <h2>Stage Ouvrier / Exécutant</h2>
-                <div class="availability">Disponibilité : Mai 2026</div>
-            </div>
-            <div class="contact-details">
-                <a href="mailto:keanu.toofa@gmail.com">keanu.toofa@gmail.com</a>
-                <a href="tel:+330666654890">+33 06 66 65 48 90</a>
-                <a href="tel:+68989534311">+689 89 53 43 11</a>
-                <span>270 Rue Saint-Jacques, 75005 Paris</span>
-                <span style="font-size: 0.85em; color: #777;">(Origine : Paea, Tahiti)</span>
-            </div>
-        </header>
+<div class="page">
+    <header>
+        <h1>Keanu TOOFA</h1>
+        <div class="subtitle">STAGE OUVRIER / EXÉCUTANT (MAI 2026)</div>
+        
+        <div class="contact-info">
+            270 Rue Saint-Jacques - 75005 Paris (Origine : Paea, Tahiti)<br>
+            +33 06 66 65 48 90 | +689 89 53 43 11<br>
+            keanu.toofa@gmail.com | LinkedIn : Keanu Toofa
+        </div>
+    </header>
 
-        <section>
-            <h3>Profil</h3>
-            <div class="profile-text">
-                "Actuellement en 1ère année d'école d'ingénieur aux Mines de Paris, je recherche un stage opérateur pour appréhender les enjeux du terrain. Je souhaite rejoindre une équipe dynamique pour découvrir le métier d'opérateur dans le secteur de la construction. Volontaire et rigoureux, mon objectif est de comprendre la chaîne de valeur d'un projet de construction au plus près des opérations."
-            </div>
-        </section>
-
-        <section>
-            <h3>Formation</h3>
-            
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">Cycle Ingénieur Civil (Master of Science & Executive Engineering)</span>
-                    <span class="entry-date">2025 – Présent</span>
-                </div>
-                <div class="entry-org">Mines Paris - PSL</div>
-                <div class="entry-loc">Paris</div>
-                <ul>
-                    <li><strong>Mini-projet "Décarboner le secteur aérien: quel avenir en France ?" :</strong> Étude techno-économique des projets de SAF (Sustainable Aviation Fuel) en France ; analyse des coûts et de la scalabilité industrielle.</li>
-                    <li><strong>Analyse de données (Python/Machine-Learning) :</strong> Étude prospective du facteur de capacité des centrales hydrauliques en France.</li>
-                </ul>
-            </div>
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">CPGE MPSI / PSI*</span>
-                    <span class="entry-date">2023 – 2025</span>
-                </div>
-                <div class="entry-org">Lycée Michel Montaigne</div>
-                <div class="entry-loc">Bordeaux</div>
-                <ul>
-                    <li>Admission : Centrale Supélec - Mines de Paris.</li>
-                    <li><span class="distinction">Major de la filière PSI au concours ICNA</span> (Ingénieur du Contrôle Aérien).</li>
-                    <li><strong>TIPE (Mécanique des fluides) :</strong> Étude de la fragmentation d'une colonne d'eau.</li>
-                </ul>
-            </div>
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">Baccalauréat Général (Mathématiques / Physique)</span>
-                    <span class="entry-date">2023</span>
-                </div>
-                <div class="entry-org">Lycée Tuianu Legayic de Papara</div>
-                <div class="entry-loc">Polynésie-Française</div>
-                <ul>
-                    <li>Mention Très Bien avec Félicitations du jury.</li>
-                    <li><span class="distinction">Major du Baccalauréat de Polynésie-Française 2023.</span></li>
-                </ul>
-            </div>
-        </section>
-
-        <section>
-            <h3>Expériences & Engagement</h3>
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">Tuteur Bénévole (Niveau MPSI)</span>
-                    <span class="entry-date">2025 – Présent</span>
-                </div>
-                <div class="entry-org">Tutorat Lycée Henri IV</div>
-                <div class="entry-loc">Paris</div>
-                <ul>
-                    <li>Accompagnement pédagogique d'étudiants en classe préparatoire.</li>
-                    <li>Transmission de méthodologies scientifiques et soutien académique.</li>
-                </ul>
-            </div>
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">Pilote Privé - PPL(A)</span>
-                    <span class="entry-date">2021 – 2023</span>
-                </div>
-                <div class="entry-org">Aéroclub C3P</div>
-                <div class="entry-loc">Polynésie-Française</div>
-                <ul>
-                    <li><strong>Culture Sécurité :</strong> Respect strict des procédures standardisées, application rigoureuse des check-lists et normes de sécurité aérienne.</li>
-                    <li><strong>Gestion des risques :</strong> Prise de décision rapide en environnement contraint et gestion des facteurs humains.</li>
-                </ul>
-            </div>
-
-            <div class="entry">
-                <div class="entry-header">
-                    <span class="entry-title">Stage d'Observation</span>
-                    <span class="entry-date">Janv. 2020</span>
-                </div>
-                <div class="entry-org">SEAC (Service d'État de l'Aviation Civile)</div>
-                <div class="entry-loc">Polynésie-Française</div>
-                <ul>
-                    <li>Immersion en zone réservée.</li>
-                    <li>Observation des flux logistiques aéroportuaires et de la coordination sol-air.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section>
-            <h3>Compétences Techniques & Linguistiques</h3>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <strong>Informatique & Data Science</strong>
-                    Python (Traitement de données : Pandas, Scikit-Learn), SQL, Pack Office (Excel).
-                </div>
-                <div class="skill-category">
-                    <strong>Langues</strong>
-                    <ul>
-                        <li><strong>Français :</strong> Langue maternelle</li>
-                        <li><strong>Anglais :</strong> Niveau C1 (Avancé)</li>
-                        <li><strong>Espagnol :</strong> Niveau B1</li>
-                        <li><strong>Tahitien :</strong> Notions</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h3>Centres d'intérêt</h3>
-            <ul>
-                <li><strong>Sport & Terrain :</strong> Force Athlétique (Ancien compétiteur niveau fédéral) ; Rugby en club.</li>
-                <li><strong>Aéronautique :</strong> Brevet d'Initiation Aéronautique (BIA), Licence PPL (Private Pilot License).</li>
-            </ul>
-        </section>
+    <div class="intro">
+        "Actuellement en 1ère année d'école d'ingénieur aux Mines de Paris, je recherche un stage opérateur pour apprendre les enjeux du terrain. Je souhaite rejoindre une équipe dynamique pour découvrir le métier d'opérateur dans les métiers de la construction. Volontaire, rigoureux, je veux comprendre la chaîne de valeur d'un projet de construction au plus près des opérations."
     </div>
+
+    <h2>Formation</h2>
+    
+    <div class="item">
+        <div class="item-header">
+            <span>Mines Paris - PSL | Cycle Ingénieur Civil</span>
+            <span>2025 - Présent</span>
+        </div>
+        <div class="item-subheader">Paris</div>
+        <ul>
+            <li><strong>Mini-projet :</strong> "Décarboner le secteur aérien quel avenir pour la France ?" – Étude techno-économique des projets de SAF.</li>
+            <li><strong>Analyse de données :</strong> Étude prospective du facteur de capacité des centrales hydrauliques (Python - Machine Learning).</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <span>Lycée Michel Montaigne | CPGE MPSI/PSI*</span>
+            <span>2023 - 2025</span>
+        </div>
+        <div class="item-subheader">Bordeaux</div>
+        <ul>
+            <li>Admission : Centrale Supélec - Mines de Paris.</li>
+            <li><strong>Major de la filière PSI</strong> au concours ICNA (Ingénieur du Contrôle Aérien).</li>
+            <li>TIPE : Étude de la fragmentation d'une colonne d'eau (Mécanique des fluides).</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <span>Lycée Tuianu Legayic | Baccalauréat Général</span>
+            <span>2023</span>
+        </div>
+        <div class="item-subheader">Papara, Polynésie-Française</div>
+        <ul>
+            <li>Mention Très Bien avec Félicitations du jury.</li>
+            <li><strong>Major du Baccalauréat de Polynésie-Française 2023.</strong></li>
+        </ul>
+    </div>
+
+    <h2>Expériences</h2>
+
+    <div class="item">
+        <div class="item-header">
+            <span>Tutorat Lycée Henri IV | Tuteur Bénévole</span>
+            <span>2025 - Présent</span>
+        </div>
+        <div class="item-subheader">Paris (Niveau MPSI)</div>
+        <ul>
+            <li>Accompagnement pédagogique d'étudiants : Pédagogie, méthodologie.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <span>Aéroclub C3P | Pilote Privé - PPL(A)</span>
+            <span>2021 - 2023</span>
+        </div>
+        <div class="item-subheader">Tahiti, Polynésie-Française</div>
+        <ul>
+            <li>Culture Sécurité : Respect strict des procédures, check-lists et normes de sécurité.</li>
+            <li>Gestion du risque : Prise de décision rapide en environnement contraint, gestion des facteurs humains.</li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <div class="item-header">
+            <span>SEAC (Aviation Civile) | Stage d'Observation</span>
+            <span>Janv. 2020</span>
+        </div>
+        <div class="item-subheader">Polynésie-Française</div>
+        <ul>
+            <li>Immersion en zone réservée : Observation des flux logistiques et de la coordination sol-air.</li>
+        </ul>
+    </div>
+
+    <h2>Compétences</h2>
+    <ul>
+        <li><strong>Informatique :</strong> Python (Traitement de données : Pandas ; Scikit-Learn), Pack Office, SQL.</li>
+        <li><strong>Langues :</strong> Français (Maternel), Anglais (C1), Espagnol (B1), Tahitien (notions).</li>
+    </ul>
+
+    <h2>Centres d'intérêt</h2>
+    <ul>
+        <li><strong>Sport :</strong> Force Athlétique (Ancien compétiteur niveau fédéral), Rugby (Club).</li>
+        <li><strong>Aéronautique :</strong> Brevet d'initiation à l'aéronautique (BIA).</li>
+    </ul>
+
+</div>
 
 </body>
 </html>
