@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to tic-tac-toe contest !</title>
+    <link rel="stylesheet" href="tic-tac-toe.css" />
+    <script src="tic-tac-toe.js"></script>
+  </head>
+    <body>
+        
+
+
+        <div id="overlay" class="hidden">
+            <h1 id="winner-text">Red won</h1>
+            <button id="btn-overlay-reset">Play again</button>
+            </div>
+        </div>
+
+        <main>
+            <h1 class="title">GRID DUEL</h1>
+            <p class="subtitle">Click cells · Red vs Blue</p>
+
+            <div id="grid">
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+            </div>
+
+            <button id="btn-reset">Reset</button>
+
+            <div id="stats">
+            <span id="stat-red">🔴 Red: 0</span>
+            <span id="stat-blue">🔵 Blue: 0</span>
+            <span id="stat-empty">⬜ Empty: 9</span>
+            </div>
+        </main>
+    </body>
+
