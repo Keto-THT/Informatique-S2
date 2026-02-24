@@ -1,0 +1,131 @@
+:root {
+      --red:    red;
+      --blue:   blue;
+      --bg:     white;
+      --border: black;
+      --cell-size: 40px;
+      --gap: 5px;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .title {
+      font-family: 'Calibri', sans-serif;
+      font-size: 3.5rem;
+      color: var(--border);
+      text-align: center;
+    }
+    .subtitle {
+      font-size: 0.7rem;
+      color: gray;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(10, var(--cell-size));
+      grid-template-rows: repeat(10, var(--cell-size));
+      gap: var(--gap);
+      cursor: pointer;
+      background: white;
+    }
+
+    
+    #grid div {
+        background: white;
+        width: var(--cell-size);
+        height: var(--cell-size);
+        gap: var(--gap);
+        border: 1px solid var(--border);
+
+        border-radius: 3.5px;
+
+    }
+
+    #grid div:hover {
+      filter: brightness(0.88);
+      transform: scale(0.96);
+    }
+
+    #game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+   
+    
+
+    #game-bar {
+  background-color: lightblue;
+  padding: 25px 40px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+}
+
+.stats-display {
+  border: 2px solid rgb(42, 130, 159);
+  border-radius: 10px;
+  padding: 10px 25px;
+  text-align: left;
+  min-width: 200px;
+}
+
+.stat-line {
+  font-size: 28px;
+  line-height: 1.5;
+  color: black;
+}
+
+#btn-reset {
+  padding: 12px 20px;
+  background: red;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+}
+#btn-reset:hover { background: darkred; }
+#btn-reset:active {
+  transform: scale(0.95);
+  opacity: 0.9;
+}
+
+.btn-info {
+  background-color: lightgray;
+  border: none;
+  border-radius: 8px;
+  width: 60px;
+  height: 80px;
+  font-size: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-info:hover { filter: brightness(0.92); }
+.btn-info:active {
+  transform: scale(0.95);
+  opacity: 0.9;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Démineur</title>
+  <link rel="stylesheet" href="demineur.css">
+</head>
+<body>
+
+
+  <div id="overlay" class="hidden">
+    <div id="overlay-content">
+      <h1>Bien joué!</h1>
+      <button id="btn-overlay-reset">Rejouer</button>
+    </div>
+  </div>
+
+
+  <div id="tutorial" class="hidden">
+    <div id="tutorial-content">
+      <h1>Comment jouer?</h1>
+      <p>Le but du jeu est de trouver les 10 bombes cachées dans la grille de 100 cases.</p>
+      <ul>
+        <li>Chaque case peut être vide ou contenir une bombe. En cliquant sur une case, vous révélez son contenu.</li>
+        <li>Si vous cliquez sur une bombe, vous perdez la partie. Si vous cliquez sur une case vide, elle affichera un chiffre indiquant le nombre de bombes présentes dans les cases adjacentes.</li>
+        <li>Utilisez ces indices pour éviter les bombes et trouver toutes les cases vides pour gagner la partie.</li>
+      </ul>
+      <p>Bonne chance!</p>
+      <button id="btn-tutorial-close">Fermer</button>
+    </div>
+  </div>
+
+
+  <main>
+    <h1 class="title">Démineur</h1>
+    <p class="subtitle">Bon courage !</p>
+
+    <div id="game-container">
+
+      <div id="grid">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+
+      <div id="game-bar">
+        <button id="btn-reset">reset</button>
+        <div class="stats-display">
+          <div class="stat-line">0 / 10 bombs</div>
+          <div class="stat-line">70 / 100 cells</div>
+        </div>
+        <button class="btn-info" id="btn-info">?</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="demineur.js" defer></script>
+</body>
+</html>
