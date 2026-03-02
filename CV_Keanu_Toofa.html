@@ -2,14 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV - Keanu TOOFA</title>
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif; /* Police standard et sobre */
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 11pt;
             color: #000;
             line-height: 1.4;
-            background-color: #fff;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
         }
@@ -18,7 +19,7 @@
             width: 210mm;
             min-height: 297mm;
             margin: 20px auto;
-            padding: 20mm; /* Marges standard A4 */
+            padding: 20mm;
             background: white;
             box-sizing: border-box;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
@@ -56,7 +57,7 @@
         h2 {
             font-size: 12pt;
             text-transform: uppercase;
-            border-bottom: 1px solid #000; /* Trait noir simple */
+            border-bottom: 1px solid #000;
             padding-bottom: 3px;
             margin-top: 20px;
             margin-bottom: 15px;
@@ -73,6 +74,11 @@
             font-weight: bold;
         }
 
+        .item-header .date {
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
         .item-subheader {
             font-style: italic;
             margin-bottom: 3px;
@@ -81,7 +87,7 @@
         ul {
             margin: 5px 0 5px 20px;
             padding: 0;
-            list-style-type: disc; /* Puces classiques */
+            list-style-type: disc;
         }
 
         li {
@@ -95,10 +101,89 @@
             font-style: italic;
         }
 
-        /* Pour l'impression */
+        /* ── IMPRESSION ── */
         @media print {
-            body { margin: 0; box-shadow: none; }
+            body { margin: 0; background: white; }
             .page { margin: 0; border: none; width: 100%; box-shadow: none; padding: 15mm; }
+        }
+
+        /* ── TABLETTE (≤ 768px) ── */
+        @media screen and (max-width: 768px) {
+            body {
+                background-color: #fff;
+            }
+
+            .page {
+                width: 100%;
+                min-height: unset;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none;
+            }
+
+            h1 {
+                font-size: 16pt;
+            }
+
+            .subtitle {
+                font-size: 11pt;
+            }
+        }
+
+        /* ── MOBILE (≤ 480px) ── */
+        @media screen and (max-width: 480px) {
+            body {
+                font-size: 10pt;
+            }
+
+            .page {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 15pt;
+                letter-spacing: 0.5px;
+            }
+
+            .subtitle {
+                font-size: 10.5pt;
+            }
+
+            .contact-info {
+                font-size: 9pt;
+                line-height: 1.7;
+            }
+
+            /* Empile titre + date verticalement sur mobile */
+            .item-header {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .item-header .date {
+                font-weight: normal;
+                font-size: 9.5pt;
+                color: #444;
+                margin-left: 0;
+            }
+
+            h2 {
+                font-size: 11pt;
+                margin-top: 18px;
+            }
+
+            ul {
+                margin-left: 15px;
+            }
+
+            li {
+                text-align: left;
+            }
+
+            .intro {
+                text-align: left;
+                font-size: 10pt;
+            }
         }
     </style>
 </head>
@@ -125,7 +210,7 @@
     <div class="item">
         <div class="item-header">
             <span>Mines Paris - PSL | Cycle Ingénieur Civil</span>
-            <span>2025 - Présent</span>
+            <span class="date">2025 - Présent</span>
         </div>
         <div class="item-subheader">Paris</div>
         <ul>
@@ -137,7 +222,7 @@
     <div class="item">
         <div class="item-header">
             <span>Lycée Michel Montaigne | CPGE MPSI/PSI*</span>
-            <span>2023 - 2025</span>
+            <span class="date">2023 - 2025</span>
         </div>
         <div class="item-subheader">Bordeaux</div>
         <ul>
@@ -150,7 +235,7 @@
     <div class="item">
         <div class="item-header">
             <span>Lycée Tuianu Legayic | Baccalauréat Général</span>
-            <span>2023</span>
+            <span class="date">2023</span>
         </div>
         <div class="item-subheader">Papara, Polynésie-Française</div>
         <ul>
@@ -164,7 +249,7 @@
     <div class="item">
         <div class="item-header">
             <span>Tutorat Lycée Henri IV | Tuteur Bénévole</span>
-            <span>2025 - Présent</span>
+            <span class="date">2025 - Présent</span>
         </div>
         <div class="item-subheader">Paris (Niveau MPSI)</div>
         <ul>
@@ -175,7 +260,7 @@
     <div class="item">
         <div class="item-header">
             <span>Aéroclub C3P | Pilote Privé - PPL(A)</span>
-            <span>2021 - 2023</span>
+            <span class="date">2021 - 2023</span>
         </div>
         <div class="item-subheader">Tahiti, Polynésie-Française</div>
         <ul>
@@ -187,7 +272,7 @@
     <div class="item">
         <div class="item-header">
             <span>SEAC (Aviation Civile) | Stage d'Observation</span>
-            <span>Janv. 2020</span>
+            <span class="date">Janv. 2020</span>
         </div>
         <div class="item-subheader">Polynésie-Française</div>
         <ul>
