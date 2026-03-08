@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header CV Simulation</title>
+    <style>
+        
+
+        /* --- 2. Architecture du Header (Grid Layout) --- */
+        .cv-header {
+            /* On utilise Grid ici pour garantir un centrage parfait de la colonne du milieu
+               indépendamment de la largeur des éléments gauche/droite. */
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* 3 colonnes : flexible / auto / flexible */
+            align-items: start; /* Alignement vertical en haut */
+            margin-bottom: 20px;
+        }
+
+        /* Colonne Gauche : Nom */
+        .header-left {
+            justify-self: start; /* Collé à gauche */
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+
+        /* Colonne Centrale : Contact */
+        .header-center {
+            justify-self: center; /* Parfaitement centré */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* Espacement fin entre les lignes */
+            font-size: 1rem;
+        }
+
+        /* Colonne Droite : Icône */
+        .header-right {
+            justify-self: end; /* Collé à droite */
+            width: 80px; /* Taille contrainte de l'avatar */
+            height: auto;
+        }
+
+        /* Gestion de l'icône SVG */
+        .user-icon {
+            fill: var(--icon-color);
+            width: 100%;
+            height: auto;
+        }
+
+        /* --- 3. La Barre de Séparation --- */
+        .separator-container {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0; /* Espace vertical autour de la barre */
+        }
+
+        .separator {
+            width: 300px; /* Largeur fixe ou % selon le besoin */
+            height: 3px;  /* Épaisseur du trait */
+            background-color: var(--accent-color);
+            border: none;
+        }
+
+        /* --- 4. Le Titre / Objectif --- */
+        .objective-title {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: normal; /* Pas de gras sur l'image */
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="cv-header">
+            <div class="header-left">
+                Keanu Toofa
+            </div>
+
+            <div class="header-center">
+                <span>phone: +33 06 66 65 48 90</span>
+                <span>address: 270 Rue Saint-Jacques</span>
+            </div>
+
+            <div class="header-right">
+                <svg class="user-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z" />
+                </svg>
+            </div>
+        </div>
+        <div class="separator-container">
+            <hr class="separator">
+        </div>
+
+        <h2 class="objective-title">Looking for an internship in corporate finance</h2>
+    </header>
+
+</body>
+</html>
