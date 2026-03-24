@@ -5,6 +5,11 @@
 // so there's essentially no need for a global variable with the server URL..
 
 // also note that it's probably wise to start with the TEST map
+let api_key = null 
+let next_update_time = Date.now()
+let default_timeout = 0 
+let board_array = null
+
 
 document.addEventListener("DOMContentLoaded",
     async () => {
@@ -105,7 +110,7 @@ document.addEventListener("DOMContentLoaded",
         }
 
         //TMP: to test the previous function: 3 lines and 5 columns
-/*         draw_map(3, 5, [
+/* draw_map(3, 5, [
             [ [255, 0, 0], [255, 255, 0], [255, 0, 0], [255, 255, 0], [255, 0, 0] ],
             [ [255, 255, 0], [255, 0, 0], [255, 255, 0], [255, 0, 0], [255, 255, 0] ],
             [ [255, 0, 0], [255, 255, 0], [255, 0, 0], [255, 255, 0], [255, 0, 0] ],
@@ -117,88 +122,96 @@ document.addEventListener("DOMContentLoaded",
         function apply_changes(ni, nj, changes) {
             const grid = document.getElementById("grid")
             for (const [i, j, r, g, b] of changes) {
-                const div = grid.children[i * nj + j]
-                if (div) div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`
+                // Mapping the 2D coordinate (i, j) to the 1D index of grid.children
+                const index = i * nj + j;
+                const div = grid.children[index];
+                if (div) div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
             }
         }
-
-        
-
-        //TMP: to test the previous function, let's change the color of 3 pixels
-/*         apply_changes(3, 5,[
-            [1, 1, 0, 0, 255],
-            [1, 2, 0, 0, 255],
-            [1, 3, 0, 0, 255],
-        ])
- */
 
         //TODO:
         // now that we have the JSON data that describes the map, we can
         // display the grid, and retrieve the corresponding API-KEY
 
-        
-
         //TODO:
         // now that we have the API-KEY,
         // write a refresh(...) function that updates the grid
-        // and attach this function to the refresh button click
+
         async function refresh() {
-            if (!API_KEY) return
-            
-            const response = await fetch(`/api/v2/${MAP_ID}/init`, {
-                credentials: 'include',
-                headers: { 'API-KEY': API_KEY },
-            })
-            if (!response.ok) return
-            const json = await response.json()
-            draw_map(NI, NJ, json.data)
+            // Ne rien faire si on n'est pas encore connecté à la carte
+            if (!API_KEY) return;
+
+            try {
+                const response = await fetch(`/api/v2/${MAP_ID}/deltas`, {
+                    method: 'GET',
+                    credentials: 'include', // required for signature cookie
+                    headers: { 'API-KEY': API_KEY }, // required header
+                });
+
+                if (!response.ok) return;
+
+                const changes = await response.json();
+                
+                apply_changes(NI, NJ, changes);
+            } catch (error) {
+                console.error("Interruption du rafraîchissement :", error);
+            }
         }
 
-        document.getElementById("refresh-button").addEventListener("click", refresh)
+        // and attach this function to the refresh button click
+        document.getElementById('refresh-button').addEventListener('click', refresh);
 
-        //TODO:
-        // to be able to color a pixel: write a set_pixel(...)
-        // function that sends a request to the server to color a pixel
-        // and attach this function to each pixel in the grid click
-        // the color is taken from the color picker (code provided below)
-        // it's up to you to find a way to get the pixel coordinates
+        async function set_pixel(event) {
+            // Vérification de l'état d'initialisation
+            if (!API_KEY) return;
 
-         async function set_pixel(event) {
-            if (!API_KEY) return
-            const div = event.currentTarget
-            const i = parseInt(div.dataset.i)
-            const j = parseInt(div.dataset.j)
-            const [r, g, b] = getPickedColorInRGB()
+            // Extraction des coordonnées i,j et r,g,b
+            const div = event.currentTarget;
+            const i = parseInt(div.dataset.i, 10);
+            const j = parseInt(div.dataset.j, 10);
+            const [r, g, b] = getPickedColorInRGB();
 
-            const response = await fetch(`/api/v2/${MAP_ID}/set`, { 
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'API-KEY': API_KEY,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ i, j, r, g, b }),
-            })
+            // Construction du dictionnaire JSON selon la documentation Swagger
+            const payload = { i: i, j: j, r: r, g: g, b: b };
 
-            if (!response.ok) {
-                alert(`Error setting pixel: ${response.status} ${response.statusText}`)
-                return
+            try {
+                const response = await fetch(`/api/v2/${MAP_ID}/set`, { 
+                    method: 'POST',
+                    credentials: 'include', 
+                    headers: {
+                        'API-KEY': API_KEY, 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.text();
+                    console.error(`Erreur HTTP ${response.status} : ${errorDetails}`);
+                    return;
+                }
+
+                const wait_ns = await response.json();
+                
+                if (wait_ns > 0) {
+    
+                    const wait_s = (wait_ns / 1_000_000_000).toFixed(1);
+                    console.warn(`Cooldown: wait ${wait_s}s`);
+                    return;
+                }
+
+              
+                div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                
+            } catch (networkError) {
+                console.error("Défaillance de l'interface réseau :", networkError);
             }
-
-            const wait = await response.json()
-            if (wait > 0) {
-                alert(`Is still waiting ${(wait / 1_000_000_000).toFixed(1)} seconds !`)
-                return
-            }
-
-            div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`
-            await refresh()
         }
-
-        setInterval(refresh, 2000)
 
         //TODO:
         // why not refresh the grid every 2 seconds?
+        setInterval(refresh, 2000)
+
         // or even refresh the grid after clicking a pixel?
 
         // ---- cosmetic / convenience / bonus:
