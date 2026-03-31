@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ApiTester</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>ApiTester</h2>
+    <div id="input">
+      <label for="apiUrl">URL de l'API :</label>
+      <input
+        type="text"
+        id="apiUrl"
+        value="http://localhost:8000"
+      />
+      <button id="check-connect">Alive?</button>
+      <div id="alive">Server connection <span id="aliveStatus">...</span></div>
+    </div>
+    <div class="btnGroup">
+      <button id="listAssoc"> Liste des Associations </button>
+      <button id="listEvent"> Liste des Événements </button>
+    </div>
+    <label for="itemId">ID de l'élément :</label>
+    <input type="text" id="itemId" placeholder="Entrez un ID" />
+
+    <div class="btnGroup">
+      <button id="detailAssoc">Détails de l'Association</button>
+      <button id="detailEvent">Détails de l'Événement</button>
+      <button id="assocEvents">Événements de l'Association</button>
+    </div>
+
+    <h3>Résultats :</h3>
+    <pre id="results"></pre>
+
+    <script src="script.js"></script>
+  </body>
+</html>

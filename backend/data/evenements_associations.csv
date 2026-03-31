@@ -1,0 +1,6 @@
+id,association_id,nom,date,lieu,description
+101,1,Hackathon,2024-04-15,Campus Informatique,Un marathon de programmation de 48 heures.
+102,2,Tournoi de Basket,2024-05-20,Gymnase Central,Tournoi amical de basket entre étudiants.
+103,2,Atelier Peinture,2024-04-30,Atelier Arts,Atelier de peinture pour découvrir différentes techniques.
+104,3,Concert Rock,2024-06-10,Salle Polyvalente,Concert de groupes rock étudiants.
+105,4,Compétition Robotique,2024-07-22,Laboratoire Robotique,"Compétition de robotique, ouverte à tous les niveaux."
