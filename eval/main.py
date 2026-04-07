@@ -15,7 +15,7 @@ from typing import Optional
 
 #création des models 
 ## table utilisateur - id, numéro de téléphone 
-class User(SQLModel, table=True):
+class Utilisateur(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     phone_number: str = Field(unique=True)                             # ajouter des contraintes plus tard pour la longueur, l'ajout de +33 pour internationaliser, etc.
 
@@ -70,25 +70,25 @@ def page_connexion(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-#l'utilisateur entre son numéro de téléphone pour se connecter ou créer un compte
-@app.get("/connexion/{phone_number}")
-def connexion(phone_number: str):
+#l'utilisateur entre son nom pour se connecter ou créer un compte
+@app.get("/connexion/{id}")
+def connexion(id: str):
     with Session(engine) as session:
         # On cherche si l'utilisateur existe déjà en base
         utilisateur = session.exec(
-            select(Utilisateur).where(Utilisateur.phone_number == phone_number)
+            select(Utilisateur).where(Utilisateur.phone_number == id)
         ).first()
 
         # Sinon, on le créer et on le sauvegarde en base
         if not utilisateur:
-            utilisateur = Utilisateur(phone_number=phone_number)
+            utilisateur = Utilisateur(phone_number=id)
             session.add(utilisateur)
             session.commit()
             session.refresh(utilisateur)  # pour récupérer l'id généré par SQLite
-            print(f"Nouvel utilisateur créé : {phone_number} (id={utilisateur.id})")
+            print(f"Nouvel utilisateur créé : {id} (id={utilisateur.id})")
         else:
             print(f"Utilisateur existant : {phone_number} (id={utilisateur.id})")
-        room = session.exec(select(Groupe).where(Groupe.nom == "Général")).first()
+        room = session.exec(select(Room).where(Room.name == "Général")).first()
         return RedirectResponse(url=f"/chat/{room.id}/{utilisateur.id}")
 
 
@@ -101,7 +101,7 @@ def page_chat(request: Request, room_id: int, user_id: int):
     with Session(engine) as session:
         # Infos utilisateur et room
         utilisateur = session.get(Utilisateur, user_id)
-        room = session.get(Groupe, room_id)
+        room = session.get(Room, room_id)
 
         # Tous les messages de la room triés par date d'envoie
         messages = session.exec(
