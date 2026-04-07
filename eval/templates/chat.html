@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat — {{ room.nom }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="chat-header">
+        <h2>{{ room.nom }}</h2>
+        <span>Connecté en tant que : {{ utilisateur.name }}</span>
+    </div>
+
+    <div class="messages-container" id="messages-container">
+        {% for msg in messages %}
+            <div class="message {% if msg.send_by == utilisateur.id %}envoye{% else %}recu{% endif %}">
+                <p>{{ msg.contenu }}</p>
+
+                <span class="heure">{{ msg.send_on.strftime('%H:%M') }}</span>
+                {% if msg.send_by == utilisateur.id %}
+                    <span class="lecture">{% if msg.message_read %}lu{% else %}non_lu{% endif %}</span>
+                {% endif %}
+
+            </div>
+        {% else %}
+            <p class="vide">Envoyer un message</p>
+        {% endfor %}
+
+    </div>
+
+    <div class="input-container">
+        <input
+            type="text"
+            id="message-input"
+            placeholder="Écris un message..."
+            autocomplete="off"
+        >
+        <button onclick="envoyerMessage()">Envoyer</button>
+    </div>
+
+    <div id="context"
+         data-user-id="{{ utilisateur.id }}"
+         data-room-id="{{ room.id }}">
+    </div>
+
+    <script src="/static/js/main.js"></script>
+
+</body>
+</html>

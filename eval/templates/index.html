@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>WhatsApp V00 — Connexion</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="connexion-container">
+        <h1>WhatsApp V00</h1>
+        <p>Entre ton prénom pour accéder au chat.</p>
+
+        <input
+            type="text"
+            id="name-input"
+            placeholder="Ex: Alice"
+            maxlength="30"
+        >
+        <button onclick="seConnecter()">Entrer</button>
+    </div>
+
+    <script>
+        function seConnecter() {
+            const name= document.getElementById("name-input").value.trim();
+
+            // Vérification basique : le champ ne doit pas être vide
+            if (!name) {
+                alert("Entre un pseudo !");
+                return;
+            }
+
+            // On redirige vers la route de connexion
+            window.location.href = "/connexion/" + encodeURIComponent(name);
+        }
+    </script>
+
+</body>
+</html>
