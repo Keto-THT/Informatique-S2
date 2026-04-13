@@ -112,3 +112,43 @@ def page_chat(request: Request, room_id: int, user_id: int):
             }
         )
 
+# ==============================================================
+# ENDPOINT WEBSOCKET
+# ==============================================================
+
+# L'URL contient room_id et user_id pour savoir qui parle et où
+@app.websocket("/ws/{room_id}/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: int, user_id: int):
+    await websocket.accept()
+    broadcaster.connect(room_id, websocket)
+
+    try:
+        
+        while True: #on attend les messages entrants
+            contenu = await websocket.receive_text() # On attend qu'un message texte arrive (bloquant jusqu'à réception)
+
+            with Session(engine) as session: # on sauvegarde le message en base de données
+                nouveau_message = Message(
+                    send_by=user_id,
+                    send_to_room=room_id,
+                    content=contenu,
+                    # send_on et message_read ont des valeurs par défaut
+                )
+                session.add(nouveau_message)
+                session.commit()
+                session.refresh(nouveau_message)  # pour récupérer l'id et send_on
+                print(f"[WS] Message sauvegardé : {contenu[:30]} (room={room_id}, user={user_id})")
+
+                donnees = json.dumps({
+                    "id": nouveau_message.id,
+                    "send_by": user_id,
+                    "content": contenu,
+                    "send_on": nouveau_message.send_on.isoformat(),
+                    "message_read": nouveau_message.message_read,
+                })
+
+            await broadcaster.broadcast(room_id, donnees)
+
+    except WebSocketDisconnect:
+        broadcaster.disconnect(room_id, websocket)
+        print(f"[WS] Déconnexion → room {room_id}, user {user_id}")
