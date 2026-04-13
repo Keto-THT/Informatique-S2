@@ -6,6 +6,11 @@ from sqlmodel import SQLModel, create_engine, Field, Session, select
 from datetime import datetime 
 from typing import Optional
 
+from broadcaster import broadcaster
+from fastapi import WebSocket, WebSocketDisconnect
+import json
+
+
 # création des models 
 ## table utilisateur - id, numéro de téléphone 
 class Utilisateur(SQLModel, table=True):
@@ -106,3 +111,4 @@ def page_chat(request: Request, room_id: int, user_id: int):
                 "messages": messages,
             }
         )
+
