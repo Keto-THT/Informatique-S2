@@ -210,6 +210,22 @@ def quitter_room(room_id: int, user_id: int):
         session.commit()
         return {"detail": "Désabonné"}
 
+@app.post("/rooms/{room_id}/read/{user_id}")
+def marquer_messages_lus(room_id: int, user_id: int):
+    # Marque comme lus tous les messages de la room non envoyés par user_id
+    with Session(engine) as session:
+        messages = session.exec(
+            select(Message)
+            .where(Message.send_to_room == room_id)
+            .where(Message.send_by != user_id)
+            .where(Message.message_read == False)  # noqa: E712
+        ).all()
+        for msg in messages:
+            msg.message_read = True
+            session.add(msg)
+        session.commit()
+        return {"detail": f"{len(messages)} messages marqués comme lus"}
+
 @app.get("/rooms/{room_id}/online")
 def utilisateurs_en_ligne(room_id: int):
     # route qui retourne la liste des utilisateurs en ligne dans une room en utilisant le broadcaster pour récupérer les connexions actives
@@ -233,28 +249,44 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int, user_id: int):
 
     try:
         while True:
-            contenu = await websocket.receive_text()
+            data = await websocket.receive_text()
+            payload = json.loads(data)
 
-            with Session(engine) as session:
-                nouveau_message = Message(
-                    send_by=user_id,
-                    send_to_room=room_id,
-                    content=contenu,
-                )
-                session.add(nouveau_message)
-                session.commit()
-                session.refresh(nouveau_message)
-                print(f"[WS] Message sauvegardé : {contenu[:30]} (room={room_id}, user={user_id})")
+            if payload.get("type") == "read":
+                # Accusé de lecture : on met à jour le message et on notifie l'expéditeur
+                message_id = payload["message_id"]
+                with Session(engine) as session:
+                    msg = session.get(Message, message_id)
+                    if msg and not msg.message_read:
+                        msg.message_read = True
+                        session.add(msg)
+                        session.commit()
+                        receipt = json.dumps({"type": "read_receipt", "message_id": message_id})
+                        await broadcaster.send_to_user(room_id, msg.send_by, receipt)
 
-                donnees = json.dumps({
-                    "id": nouveau_message.id,
-                    "send_by": user_id,
-                    "content": contenu,
-                    "send_on": nouveau_message.send_on.isoformat(),
-                    "message_read": nouveau_message.message_read,
-                })
+            elif payload.get("type") == "message":
+                contenu = payload["content"]
+                with Session(engine) as session:
+                    nouveau_message = Message(
+                        send_by=user_id,
+                        send_to_room=room_id,
+                        content=contenu,
+                    )
+                    session.add(nouveau_message)
+                    session.commit()
+                    session.refresh(nouveau_message)
+                    print(f"[WS] Message sauvegardé : {contenu[:30]} (room={room_id}, user={user_id})")
 
-            await broadcaster.broadcast(room_id, donnees)
+                    donnees = json.dumps({
+                        "type": "message",
+                        "id": nouveau_message.id,
+                        "send_by": user_id,
+                        "content": contenu,
+                        "send_on": nouveau_message.send_on.isoformat(),
+                        "message_read": nouveau_message.message_read,
+                    })
+
+                await broadcaster.broadcast(room_id, donnees)
 
     except WebSocketDisconnect:
         broadcaster.disconnect(room_id, websocket)

@@ -22,7 +22,8 @@
 
     <div class="messages-container" id="messages-container">
         {% for msg in messages %}
-            <div class="message {% if msg.send_by == utilisateur.id %}envoye{% else %}recu{% endif %}">
+            <div class="message {% if msg.send_by == utilisateur.id %}envoye{% else %}recu{% endif %}"
+                 {% if msg.send_by == utilisateur.id %}data-message-id="{{ msg.id }}"{% endif %}>
                 <p>{{ msg.content }}</p>
                 <span class="heure">{{ msg.send_on.strftime('%H:%M') }}</span>
                 {% if msg.send_by == utilisateur.id %}

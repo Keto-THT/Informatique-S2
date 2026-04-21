@@ -25,6 +25,12 @@ class Broadcaster:
         # retourne la liste des user_id connéctés dans la room
         return [uid for uid, _ in self.rooms.get(room_id, [])]
 
+    async def send_to_user(self, room_id: int, user_id: int, message: str):
+        for uid, ws in self.rooms.get(room_id, []):
+            if uid == user_id:
+                await ws.send_text(message)
+                return
+
     async def broadcast(self, room_id: int, message: str):
         # envoie un message à tous les websockets connectés dans la room
         if room_id not in self.rooms:
