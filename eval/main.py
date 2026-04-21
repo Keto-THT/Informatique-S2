@@ -18,6 +18,12 @@ class Utilisateur(SQLModel, table=True):
     name: Optional[str] = Field(unique=True)                             # ajouter des contraintes plus tard pour la longueur, les caractères autorisés, etc.
     #phone_number: str = Field(unique=True)                             # ajouter des contraintes plus tard pour la longueur, l'ajout de +33 pour internationaliser, etc.
 
+## table subscriptions pour faire le lien entre les utilisateurs et les rooms - id, user_id, room_id
+class Subscription(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="utilisateur.id")
+    room_id: int = Field(foreign_key="room.id")
+
 ## table groupe pour faire des groupes de discussions - id, name 
 class Room(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
