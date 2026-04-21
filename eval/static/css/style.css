@@ -204,6 +204,7 @@ body {
     border-radius: 3px;
 }
 
-.btn-join  { background: #075e54; }
-.btn-enter { background: #128c7e; }
-.btn-leave { background: #e74c3c; }
+.btn-join   { background: #075e54; }
+.btn-enter  { background: #128c7e; }
+.btn-leave  { background: #e74c3c; }
+.btn-delete { background: #922b21; }

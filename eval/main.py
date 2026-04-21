@@ -22,10 +22,11 @@ class Subscription(SQLModel, table=True): # table d'abonnement user -> room pour
     user_id: int = Field(foreign_key="utilisateur.id")
     room_id: int = Field(foreign_key="room.id")
 
-class Room(SQLModel, table=True): 
-    # table de room de discussion avec un nom unique 
+class Room(SQLModel, table=True):
+    # table de room de discussion avec un nom unique
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(unique=True)
+    created_by: Optional[int] = Field(default=None, foreign_key="utilisateur.id")
 
 class Message(SQLModel, table=True):
     # table de message avec les infos d'envoi et de lecture
@@ -111,7 +112,7 @@ def page_lobby(request: Request, user_id: int):
         ).all()
         subscribed_ids = {s.room_id for s in subs}
         rooms_data = [
-            {"id": r.id, "name": r.name, "subscribed": r.id in subscribed_ids}
+            {"id": r.id, "name": r.name, "subscribed": r.id in subscribed_ids, "created_by": r.created_by}
             for r in all_rooms
         ]
     return templates.TemplateResponse(
@@ -145,17 +146,35 @@ def page_chat(request: Request, room_id: int, user_id: int):
 # ROUTES ROOMS (API)
 # ==============================================================
 
-@app.post("/rooms/create/{name}")
-def creer_room(name: str):
+@app.post("/rooms/create/{name}/{user_id}")
+def creer_room(name: str, user_id: int):
     with Session(engine) as session:
         existing = session.exec(select(Room).where(Room.name == name)).first()
         if existing:
             raise HTTPException(status_code=400, detail="Room déjà existante")
-        room = Room(name=name)
+        room = Room(name=name, created_by=user_id)
         session.add(room)
         session.commit()
         session.refresh(room)
         return {"id": room.id, "name": room.name}
+
+@app.delete("/rooms/{room_id}/{user_id}")
+def supprimer_room(room_id: int, user_id: int):
+    with Session(engine) as session:
+        room = session.get(Room, room_id)
+        if not room:
+            raise HTTPException(status_code=404, detail="Room introuvable")
+        if room.created_by is None:
+            raise HTTPException(status_code=403, detail="Impossible de supprimer cette room")
+        if room.created_by != user_id:
+            raise HTTPException(status_code=403, detail="Seul le créateur peut supprimer cette room")
+        # Suppression des abonnements liés à la room
+        subs = session.exec(select(Subscription).where(Subscription.room_id == room_id)).all()
+        for sub in subs:
+            session.delete(sub)
+        session.delete(room)
+        session.commit()
+        return {"detail": "Room supprimée"}
 
 @app.post("/rooms/join/{room_id}/{user_id}")
 def rejoindre_room(room_id: int, user_id: int):

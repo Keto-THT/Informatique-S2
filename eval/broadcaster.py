@@ -3,37 +3,34 @@ from fastapi import WebSocket
 
 class Broadcaster:
     def __init__(self):
-        """
-        Dictionnaire : room_id (int) → liste de WebSockets connectés
-        Exemple : {1: [ws_keanu, ws_alice], 2: [ws_bob]}
-        """
-        self.rooms: dict[int, list[WebSocket]] = {}
+        # room_id → liste de (user_id, websocket)
+        self.rooms: dict[int, list[tuple[int, WebSocket]]] = {}
 
-    def connect(self, room_id: int, websocket: WebSocket):
-        """Ajoute un WebSocket à la room donnée."""
-        # Si la room n'existe pas encore dans le dictionnaire, on la crée
+    def connect(self, room_id: int, user_id: int, websocket: WebSocket):
+        # ajoute la connexion du websocket à la room
         if room_id not in self.rooms:
             self.rooms[room_id] = []
-        # On ajoute la connexion de cet utilisateur à la room
-        self.rooms[room_id].append(websocket)
+        self.rooms[room_id].append((user_id, websocket))
         print(f"[Broadcaster] Connexion ajoutée → room {room_id} ({len(self.rooms[room_id])} connecté(s))")
 
     def disconnect(self, room_id: int, websocket: WebSocket):
-        """Retire un WebSocket de la room quand l'utilisateur se déconnecte."""
+        # retire la connexion du websocket de la room
         if room_id in self.rooms:
-            self.rooms[room_id].remove(websocket)
+            self.rooms[room_id] = [
+                (uid, ws) for uid, ws in self.rooms[room_id] if ws is not websocket
+            ]
             print(f"[Broadcaster] Connexion retirée → room {room_id} ({len(self.rooms[room_id])} connecté(s))")
 
+    def get_online_user_ids(self, room_id: int) -> list[int]:
+        # retourne la liste des user_id connéctés dans la room
+        return [uid for uid, _ in self.rooms.get(room_id, [])]
+
     async def broadcast(self, room_id: int, message: str):
-        """Envoie un message texte à tous les WebSockets connectés dans la room."""
-        # Si personne n'est dans la room, rien à faire
+        # envoie un message à tous les websockets connectés dans la room
         if room_id not in self.rooms:
             return
-
-        # On parcourt tous les WebSockets de la room et on leur envoie le message
-        for websocket in self.rooms[room_id]:
-            await websocket.send_text(message)
-
+        for _, ws in self.rooms[room_id]:
+            await ws.send_text(message)
         print(f"[Broadcaster] Message diffusé dans la room {room_id} : {message[:50]}")
 
 
