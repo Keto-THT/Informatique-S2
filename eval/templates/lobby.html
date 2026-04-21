@@ -38,6 +38,12 @@
                         Rejoindre
                     </button>
                 {% endif %}
+                {% if room.created_by == utilisateur.id %}
+                    <button class="btn-delete"
+                            onclick="supprimerRoom({{ room.id }}, {{ utilisateur.id }})">
+                        Supprimer
+                    </button>
+                {% endif %}
             </div>
         </li>
         {% else %}
@@ -47,11 +53,15 @@
 
 </div>
 
+<div id="context" data-user-id="{{ utilisateur.id }}" style="display:none"></div>
+
 <script>
+    const userId = parseInt(document.getElementById("context").dataset.userId);
+
     async function creerRoom() {
         const name = document.getElementById("new-room-name").value.trim();
         if (!name) return;
-        const res = await fetch(`/rooms/create/${encodeURIComponent(name)}`, { method: "POST" });
+        const res = await fetch(`/rooms/create/${encodeURIComponent(name)}/${userId}`, { method: "POST" });
         if (res.ok) {
             window.location.reload();
         } else {
@@ -71,6 +81,17 @@
         const res = await fetch(`/rooms/leave/${roomId}/${userId}`, { method: "DELETE" });
         if (res.ok) {
             window.location.reload();
+        }
+    }
+
+    async function supprimerRoom(roomId, userId) {
+        if (!confirm("Supprimer ce salon ? Les messages seront conservés.")) return;
+        const res = await fetch(`/rooms/${roomId}/${userId}`, { method: "DELETE" });
+        if (res.ok) {
+            window.location.reload();
+        } else {
+            const err = await res.json();
+            alert(err.detail);
         }
     }
 
