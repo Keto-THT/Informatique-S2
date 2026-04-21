@@ -2,31 +2,36 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Chat — {{ room.nom }}</title>
+    <title>Chat — {{ room.name }}</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
     <div class="chat-header">
-        <h2>{{ room.nom }}</h2>
-        <span>Connecté en tant que : {{ utilisateur.name }}</span>
+        <div class="chat-header-top">
+            <div>
+                <a href="/lobby/{{ utilisateur.id }}" class="btn-back">← Salons</a>
+                <h2>{{ room.name }}</h2>
+            </div>
+            <span>Connecté en tant que : {{ utilisateur.name }}</span>
+        </div>
+        <div id="online-users" class="online-users">
+            <strong>En ligne :</strong> <span id="online-list">...</span>
+        </div>
     </div>
 
     <div class="messages-container" id="messages-container">
         {% for msg in messages %}
             <div class="message {% if msg.send_by == utilisateur.id %}envoye{% else %}recu{% endif %}">
-                <p>{{ msg.contenu }}</p>
-
+                <p>{{ msg.content }}</p>
                 <span class="heure">{{ msg.send_on.strftime('%H:%M') }}</span>
                 {% if msg.send_by == utilisateur.id %}
                     <span class="lecture">{% if msg.message_read %}lu{% else %}non_lu{% endif %}</span>
                 {% endif %}
-
             </div>
         {% else %}
             <p class="vide">Envoyer un message</p>
         {% endfor %}
-
     </div>
 
     <div class="input-container">

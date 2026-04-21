@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Salons — {{ utilisateur.name }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="chat-header">
+    <h2>Salons de discussion</h2>
+    <span>Connecté en tant que : {{ utilisateur.name }}</span>
+</div>
+
+<div class="lobby-container">
+
+    <div class="create-room">
+        <input type="text" id="new-room-name" placeholder="Nom du nouveau salon...">
+        <button onclick="creerRoom()">Créer</button>
+    </div>
+
+    <ul class="room-list">
+        {% for room in rooms %}
+        <li class="room-item">
+            <span class="room-name">{{ room.name }}</span>
+            <div class="room-actions">
+                {% if room.subscribed %}
+                    <a href="/chat/{{ room.id }}/{{ utilisateur.id }}">
+                        <button class="btn-enter">Entrer</button>
+                    </a>
+                    <button class="btn-leave"
+                            onclick="quitterRoom({{ room.id }}, {{ utilisateur.id }})">
+                        Quitter
+                    </button>
+                {% else %}
+                    <button class="btn-join"
+                            onclick="rejoindreRoom({{ room.id }}, {{ utilisateur.id }})">
+                        Rejoindre
+                    </button>
+                {% endif %}
+            </div>
+        </li>
+        {% else %}
+            <p class="vide">Aucun salon disponible.</p>
+        {% endfor %}
+    </ul>
+
+</div>
+
+<script>
+    async function creerRoom() {
+        const name = document.getElementById("new-room-name").value.trim();
+        if (!name) return;
+        const res = await fetch(`/rooms/create/${encodeURIComponent(name)}`, { method: "POST" });
+        if (res.ok) {
+            window.location.reload();
+        } else {
+            const err = await res.json();
+            alert(err.detail);
+        }
+    }
+
+    async function rejoindreRoom(roomId, userId) {
+        const res = await fetch(`/rooms/join/${roomId}/${userId}`, { method: "POST" });
+        if (res.ok) {
+            window.location.reload();
+        }
+    }
+
+    async function quitterRoom(roomId, userId) {
+        const res = await fetch(`/rooms/leave/${roomId}/${userId}`, { method: "DELETE" });
+        if (res.ok) {
+            window.location.reload();
+        }
+    }
+
+    document.getElementById("new-room-name").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") creerRoom();
+    });
+</script>
+
+</body>
+</html>
