@@ -3,11 +3,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    border-radius: 2px
 }
 
 body {
-    font-family: Helvetica;
-    background: whitesmoke;
+    animation: mymove 5s infinite;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background: tan;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -18,6 +20,7 @@ body {
     margin: 100px auto;
     text-align: center;
     width: 300px;
+    
 }
 
 .connexion-container input {
@@ -26,6 +29,7 @@ body {
     margin: 16px 0 8px 0;
     font-size: 1rem;
     border: 1px solid #999;
+    border-radius: 20px,
 }
 
 .connexion-container button {
@@ -112,3 +116,94 @@ body {
     cursor: pointer;
     font-size: 1rem;
 }
+
+/* Chat header layout */
+.chat-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.chat-header-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back {
+    color: white;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.online-users {
+    font-size: 0.8rem;
+    color: #d4edda;
+}
+
+/* Lobby */
+.lobby-container {
+    max-width: 480px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.create-room {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.create-room input {
+    flex: 1;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+}
+
+.create-room button {
+    padding: 8px 16px;
+    background: #075e54;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.room-list {
+    list-style: none;
+}
+
+.room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    background: white;
+}
+
+.room-name {
+    font-size: 1rem;
+}
+
+.room-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-join, .btn-enter, .btn-leave {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 3px;
+}
+
+.btn-join  { background: #075e54; }
+.btn-enter { background: #128c7e; }
+.btn-leave { background: #e74c3c; }
